@@ -1,0 +1,63 @@
+<!-- templates/home.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="mb-5 container">
+  <h1>Prediction Results</h1>
+  <b>Thank you for entering your data!</b>
+  <hr>
+  {% if pred %}
+    <h3>With the information you entered, your insurance is: {{pred}} </h3>
+  {% endif %}
+</div>
+
+<div class="container w-50">
+  <table class="mt-3 table">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col">Feature</th>
+        <th scope="col">Value</th>
+      </tr>
+    </thead>
+    <tbody class="table-light">
+      <tr>
+        <th scope="row">Age</th>
+        <td>{{age}}</td>
+      </tr>
+      <tr>
+        <th scope="row">Weight</th>
+        <td>{{weight}}</td>
+      </tr>
+      <tr>
+        <th scope="row">Height</th>
+        <td>{{height}}</td>
+      </tr>
+      <tr>
+        <th scope="row">BMI</th>
+        <td>{{bmi}}</td>
+      </tr>
+      <tr>
+        <th scope="row">Number of Children</th>
+        <td>{{children}}</td>
+      </tr>
+      <tr>
+        <th scope="row">Smoker</th>
+        {% if smoker == 1 %}
+          <td>Yes</td>
+        {% else %}
+          <td>No</td>
+        {% endif %}
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="container mt-5 text-center">
+  <button class="btn btn-primary btn-lg w-80 mt-15" type="button">
+    <a href="{% url 'home' %}"> Make another prediction</a>
+  </button>
+</div>
+
+
+
+{% endblock content %}

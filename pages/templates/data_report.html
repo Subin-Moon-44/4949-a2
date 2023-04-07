@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% load static %}
+<div class="container mb-5">
+    <div class="text-center mb-5 mt-3">
+        <h1>Data Report</h1>
+    </div>
+    <h2>Problem Definition</h2>
+    The problem is based on a data set called 'Sample Insurance Claim Prediction Dataset. This is based on 'Medical Cost Personal Dataset'.<br/><br/>
+    The dataset contains 7 features that can be used to predict the insurance claim. In this report, we are going to perform a Logistic Regression to predict insuranceclaim and evalue ate the model using cross-fold validation of 4 folds.<br/><br/>
+    <a href="https://www.kaggle.com/datasets/easonlai/sample-insurance-claim-prediction-dataset" target="_blank" style="color: blue">Source</a>
+</div>
+
+<div class="container mb-5">
+    <h2>Exploratory Data Analysis</h2>
+    <h3>Feature Summary</h3>
+    <ul>
+        <li>
+            age: Age of policyholder
+        </li>
+        <li>sex: gender of policyholder (female=0, male=1)</li>
+        <li>bmi: Body mass index, providing an understanding of body, weights that are relatively high or low relative to height, objective index of body weight (kg / m^2) using the ratio of height to weight, ideally 18.5 to 25</li>
+        <li>children: number of children/dependents of policyholder</li>
+        <li>smoker: smoking state of policyholder (non-smoker=0, smoker=1)</li>
+        <li>region: the residential area of policyholder in the US (northeast=0, northwest=1, southeast=2, southwest=3)</li>
+        <li>charges: individual medical costs billed by health insurance</li>
+        <li>insuranceclaim: target variable (yes=1, no=0)</li>
+    </ul>
+
+    <h3>Data Summary</h3>
+    <h4>Data Dictionary</h4>
+    <div class="text-center">
+        <img class="mb-2" src="{% static 'data_dict.png' %}" alt="data dictionary" style="width: 70vw"/>
+    </div>
+    <h3>Data Preparation</h3>
+    All columns are integer type and there is no null or missing value in the dataset. Therefore, no extra data processing was needed.
+</div>
+<div class="container mb-5">
+    <h2>Data Visualization</h2>
+    <h3>Target Distribution</h3>
+    <p>Target variable's distribution are very important. For this case, the number of those who got insurance claimed are approximately 200 more than those who didn't.</p>
+    <div class="text-center">
+        <img class="mb-2" src="{% static 'target_hist.png' %}" alt="target distribution"/>
+    </div>
+    <h3>Predictor Variables Distribution</h3>
+    <div class="text-center">
+        <img class="mb-2" src="{% static 'feature_hist.png' %}" alt="predictor distribution" style="width: 80vw"/>
+    </div>
+    <h3>Correlation Matrix</h3>
+        <div class="text-center">
+            <img class="mb-3" src="{% static 'corr.png' %}" alt="correlation" style="width: 80vw"/>
+        </div>
+    <h3>Correlation Heatmap</h3>
+        <div class="text-center">
+            <img class="mb-2" src="{% static 'heatmap.png' %}" alt="correlation heatmap" style="width: 60vw"/>
+        </div>
+    <h3>Feature Segmentation</h3>
+    <p>As you can see from the heatmap below, 'sex' and 'region' seem to be having the least correlation to 'insuranceclaim'. </p>
+        <div class="text-center">
+            <img class="mb-2" src="{% static 'seg.png' %}" alt="feature segmentation" style="width: 50vw"/>
+        </div>
+</div>
+
+<div class="container mb-5">
+    <h2>Model Development</h2>
+    <h3>Feature Selection </h3>
+    <p>The features has been selected using Chi-square score. Based on the outcome of the approach, <b>'age', 'bmi', 'children', and 'smoker'</b> were selected as significant variables.</p>
+    <div>
+    <p><b>Output: </b><br/>
+    Predictor variables: ['age', 'sex', 'bmi', 'children', 'smoker', 'region', 'charges']<br/>
+    Predictor Chi-Square Scores: [8.706e+01 6.596e-01 2.393e+02 2.976e+02 1.182e+02 4.700e-01 1.415e+06]<br/>
+    [0 2 3 4 6]<br/>
+    ['age' 'bmi' 'children' 'smoker' 'charges']</p>
+    </div>
+    <h4>PairPlot of 'age', 'bmi', 'children', 'smoker' with 'insuranceclaim'</h4>
+    <p>The plot shows that there are some clear differences between the distributions of the variables for those who make an insurance claim versus those who do not.<br/><br/>
+    For example, there is more possibility of the insurance claim for smokers than non-smokers. Also, those whose bmi are between 20 and 50 more likely get the insurance claimed.</p>
+    <div class="text-center">
+        <img class="mb-2" src="{% static 'pairplot.png' %}" alt="pairplot of significant features" style="width: 80vw"/>
+    </div>
+
+    <h3>Model Training</h3>
+    <p>The Logistic Regression model was evaluated using cross-fold validation of 4 folds.</p>
+    <div class="container text-center">
+        <div class="row">
+            <div class="col">
+                <h5>Model performance using <i>No Scaler</i></h5>
+                <img class="mb-2" src="{% static 'no_scaler.png' %}" alt="no scaler" style="width: 300px"/>
+            </div>
+            <div class="col">
+                <h5>Model performance using <i>MinMaxScaler</i></h5>
+                <img class="mb-2" src="{% static 'minmax_scaler.png' %}" alt="minmax scaler" style="width: 300px"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <h5>Model performance using <i>StandardScaler</i></h5>
+                <img class="mb-2" src="{% static 'standard_scaler.png' %}" alt="standard scaler" style="width: 300px"/>
+            </div>
+            <div class="col">
+                <h5>Model performance using <i>RobustScaler</i></h5>
+                <img class="mb-2" src="{% static 'robust_scaler.png' %}" alt="robust scaler" style="width: 300px"/>
+            </div>
+        </div>
+    </div>
+    <p>Based on the average scores, it appears that the StandardScaler performs the best with the highest average scores of accuracy, precision, recall, and F1. The RobustScaler also performs well but has slightly lower scores than the StandardScaler. The MinMaxScaler performs the worst with the lowest scores for all metrics. However, it's worth noting that the standard deviation of the scores is relatively small for all scalers, indicating that the performance is consistent across multiple trials.<br/><br/>
+    In conclusion, the Standard Scaler seems to be performing the best with the highest average F1 score and precision. Therefore, we are going to save the model using the <b>StandardScaler</b> for the application.</p>
+</div>
+<div class="container mb-5">
+    <h2>Conclusion</h2>
+    <p>In conclusion, with four selected features 'age', 'bmi', 'children', and 'smoker', the Logistic Regression model using StandardScaler is the best model among plain Logistic Regression model, MinMaxScaler, and RobustScaler.</p>
+</div>
+{% endblock content %}

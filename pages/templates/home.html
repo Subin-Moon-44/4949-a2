@@ -1,0 +1,60 @@
+<!-- templates/home.html -->
+{% extends "base.html" %}
+
+{% block content %}
+  <!-- This form references the homePost route. -->
+    <div class="mb-4 container w-50">
+        <div class="py-5 text-center">
+            <h1>Predict Your Insurance</h1>
+        </div>
+        <div class="row">
+            <div class="col">
+                <form action="{% url 'homePost' %}" method="post">
+                    {% csrf_token %}
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label for="age" class="form-label">Age</label>
+                            <input class="form-control" type="text" id="age" name="age" required/>
+                        </div>
+                        <div class="col-12">
+                            <label for="weight" class="form-label">Weight (kg)</label>
+                            <input class="form-control" type="text" id="weight" name="weight" required/>
+                        </div>
+                        <div class="col-12">
+                            <label for="height" class="form-label">Height (cm)</label>
+                            <input class="form-control" type="text" id="height" name="height" required/>
+                        </div>
+                        <div class="col-12">
+                            <label for="children" class="form-label">Number of Children</label>
+                            <input class="form-control" type="text" id="children" name="children" required>
+                        </div>
+                        <div class="col-12">
+                            <h5>Do you smoke?</h5>
+                            <div class="my-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="smoker" id="smoker1" value="Yes" required>
+                                    <label class="form-check-label" for="smoker1">
+                                    Yes
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="smoker" id="smoker2" value="No" checked required>
+                                    <label class="form-check-label" for="smoker2">
+                                    No
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit button is also contained in the form-->
+                    <button class="w-100 btn btn-primary" type="submit">Claim</button>
+                </form>
+            </div>
+        </div>
+<!-- End of form. -->
+    </div>
+
+<!-- This error will notify the user if there are issues with the POST request -->
+{% if errorMessage %}<p><strong>{{errorMessage}}</strong></p>{% endif %}
+{% endblock content %}
